@@ -31,7 +31,7 @@ platforms:
       LC_ALL: en_US.utf8
       DEBIAN_FRONTEND: noninteractive
   - name: archlinux-latest
-    image: jonsible/archlinux:latest
+    image: jonsible/archlinux:latest-build
     env:
       container: docker
 provisioner:

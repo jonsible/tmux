@@ -7,9 +7,15 @@
     state: present
   when: tmux_install_from_source|bool
 
+- name: Installing git
+  become: true
+  pacman:
+    name: git
+    state: present
+
 - name: Installing additionnal build tools
   become: true
-  apt:
+  pacman:
     name: "{{ item }}"
     state: present
   loop:
