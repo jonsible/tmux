@@ -1,0 +1,29 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    tmux_install_from_source: true
+    tmux_user_strip: ['user.*']
+    tmux_user_filter: ['jsch.*']
+    tmux_source_path: "/opt"
+    tmux_skel_config: true
+    tmux_user_install: true
+    tmux_user_config: true
+  pre_tasks:
+    - name: Update cache
+      apt:
+        update_cache: true
+      when: ansible_os_family == "Debian"
+  tasks:
+    - include_role:
+        name: geerlingguy.git
+
+    - name: Creating users
+      become: true
+      user:
+        name: "{{ item }}"
+        shell: /bin/bash
+      loop: ['jscherrer', 'user1', 'user2', 'svc_user', 'svc_user2']
+
+    - include_role:
+        name: tmux

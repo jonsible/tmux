@@ -1,0 +1,96 @@
+# yamllint disable rule:line-length
+---
+
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}-family.yml"
+
+- name: Include Distribution version specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: Include tasks
+  include_tasks: "os_specific/{{ ansible_distribution }}.yml"
+
+- name: Include tasks
+  include_tasks: "os_specific/{{ ansible_os_family }}-family.yml"
+
+- include_tasks: install_repo.yml
+  when: not tmux_install_from_source|bool
+
+- include_tasks: set_user_list.yml
+  when: >
+    tmux_user_config|bool or
+    tmux_user_install|bool
+
+############### Prepare source install ###############
+
+- name: Pre-tasks to install from source
+  block:
+    - name: Getting latest tmux version
+      shell: | # noqa 303
+        set -o pipefail
+        {{ tmux_git_version_cmd }}
+      args:
+        executable: /bin/bash
+      register: tmux_git
+      changed_when: false
+
+    - name: Checking if tmux is installed
+      stat:
+        path: "{{ tmux_prefix }}/bin/{{ tmux_bin_name }}"
+      register: tmux_installed
+
+    - name: Getting current tmux version
+      shell: |
+        set -o pipefail
+        {{ tmux_local_version_cmd }}
+      args:
+        executable: /bin/bash
+      when: tmux_installed.stat.exists
+      register: tmux_local
+      changed_when: false
+
+    - name: Set forced version
+      set_fact:
+        tmux_git_version: "{{ tmux_version }}"
+
+    - name: Set latest tmux version
+      set_fact:
+        tmux_git_version: "{{ tmux_git.stdout }}"
+      when: not tmux_git_version
+
+    - name: Set local tmux version
+      set_fact:
+        tmux_local_version: "{{ tmux_local.stdout }}"
+      when: tmux_installed.stat.exists
+  when: tmux_install_from_source|bool
+
+############### Source Install ###############
+
+- name: Install from source
+  block:
+    - name: Removing any tmux package
+      become: true
+      package:
+        name: tmux
+        state: absent
+
+    - include_tasks: uninstall_source.yml
+      when:
+        - tmux_installed.stat.exists
+        - >
+          (tmux_git_version != tmux_local_version) or
+          tmux_force_install|bool
+
+    - include_tasks: install_source.yml
+
+  when:
+    - tmux_install_from_source|bool
+    - >
+      not tmux_installed.stat.exists or
+      tmux_force_install|bool or
+      (tmux_git_version != tmux_local_version)
+
+############### Config ###############
+
+- name: Installing config
+  include_tasks: config.yml

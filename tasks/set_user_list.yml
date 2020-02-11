@@ -1,0 +1,29 @@
+---
+- name: Exiting if no user filter/strip provided
+  assert:
+    that: >
+      tmux_user_strip|length > 0 or
+      tmux_user_filter|length > 0
+
+- name: Getting ulist
+  include_role:
+    name: jonsible.ulist
+    tasks_from: set_ulist.yml
+  when: tmux_user_list|length == 0
+
+- name: Setting ulist if tmux_user_list is set
+  set_fact:
+    ulist: "{{ tmux_user_list }}"
+  when: tmux_user_list|length != 0
+
+- name: Processing ulist
+  include_role:
+    name: jonsible.ulist
+    tasks_from: process_ulist.yml
+  vars:
+    filter: "{{ tmux_user_filter }}"
+    strip: "{{ tmux_user_strip }}"
+
+- name: Setting user_list
+  set_fact:
+    tmux_user_list: "{{ ulist }}"

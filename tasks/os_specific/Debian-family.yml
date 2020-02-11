@@ -1,0 +1,19 @@
+---
+
+- name: Installing build tools
+  become: true
+  apt:
+    name: "{{ build_tools }}"
+    update_cache: true
+    state: present
+
+- name: Installing additionnal build tools
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - autoconf
+    - libncurses-dev
+    - libevent-dev
+    - pkg-config

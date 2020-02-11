@@ -1,0 +1,4 @@
+---
+- src: geerlingguy.git
+- src: jonsible.ulist
+- src: jonsible.filter_plugins

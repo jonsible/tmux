@@ -1,0 +1,36 @@
+---
+galaxy_info:
+  role_name: tmux
+  author: Jonathan Scherrer
+  description: |
+    Role to install tmux
+
+  license: MIT
+
+  min_ansible_version: 2.3
+
+  platforms:
+    - name: CentOS
+      versions:
+        - 7
+    - name: Debian
+      versions:
+        - stretch
+    - name: Fedora
+      versions:
+        - 29
+    - name: Ubuntu
+      versions:
+        - bionic
+
+  galaxy_tags: []
+
+  dependencies:
+    - role: geerlingguy.git
+      vars:
+        git_install_from_source: true
+        git_install_from_source_force_update: true
+        git_install_path: "/usr/local"
+        git_install_version: "2.24.1"
+
+    - role: jonsible.ulist

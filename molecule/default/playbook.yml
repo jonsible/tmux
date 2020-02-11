@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    tmux_skel_config: true
+  pre_tasks:
+    - name: Update cache
+      apt:
+        update_cache: true
+      when: ansible_os_family == "Debian"
+  tasks:
+    - include_role:
+        name: geerlingguy.git
+
+    - include_role:
+        name: tmux

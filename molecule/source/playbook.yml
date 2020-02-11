@@ -1,0 +1,29 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    tmux_install_from_source: true
+    tmux_prefix: "/usr/local"
+    tmux_source_path: "/test/source"
+    tmux_skel_config: true
+  pre_tasks:
+    - name: Update cache
+      apt:
+        update_cache: true
+      when: ansible_os_family == "Debian"
+  tasks:
+    - include_role:
+        name: geerlingguy.git
+
+    - include_role:
+        name: tmux
+
+    - include_role:
+        name: tmux
+        apply:
+          tags:
+            - molecule-idempotence-notest
+      vars:
+        tmux_force_install: true
+      tags:
+        - molecule-idempotence-notest

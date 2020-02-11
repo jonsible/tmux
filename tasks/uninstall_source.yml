@@ -1,0 +1,19 @@
+---
+- name: Uninstalling tmux
+  become: true
+  make:
+    target: uninstall
+    chdir: "{{ tmux_source_path }}/tmux-{{ tmux_local_version }}/"
+  when: not tmux_user_install|bool
+
+- name: Removing source folder
+  become: true
+  file:
+    path: "{{ tmux_source_path }}/tmux-{{ tmux_local_version }}/"
+    state: absent
+  when: not tmux_user_install|bool
+
+- name: Include tmux user uninstall
+  include_tasks: uninstall_source_user.yml
+  when: tmux_user_install|bool
+  loop: "{{ lookup('dict', tmux_user_list, wantlist=true) }}"
