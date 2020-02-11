@@ -15,9 +15,6 @@
         update_cache: true
       when: ansible_os_family == "Debian"
   tasks:
-    - include_role:
-        name: geerlingguy.git
-
     - name: Creating users
       become: true
       user:

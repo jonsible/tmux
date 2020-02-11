@@ -25,6 +25,12 @@
 
 - name: Pre-tasks to install from source
   block:
+    - name: Installing git
+      become: true
+      package:
+        name: git
+        state: present
+
     - name: Getting latest tmux version
       shell: | # noqa 303
         set -o pipefail

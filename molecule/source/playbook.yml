@@ -13,9 +13,6 @@
       when: ansible_os_family == "Debian"
   tasks:
     - include_role:
-        name: geerlingguy.git
-
-    - include_role:
         name: tmux
 
     - include_role:

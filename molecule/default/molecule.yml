@@ -8,19 +8,11 @@ lint:
 platforms:
   - name: centos-7
     image: jonsible/centos:7
-    # privileged: true
-    # volumes:
-    #   - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    # command: "/sbin/init"
     tty: true
     env:
       container: docker
   - name: debian-stretch
     image: jonsible/debian:stretch
-    # privileged: true
-    # volumes:
-    #   - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    # command: "/lib/systemd/systemd"
     tty: true
     env:
       container: docker
@@ -32,6 +24,11 @@ platforms:
       container: docker
 provisioner:
   name: ansible
+  env:
+    # yamllint disable-line rule:line-length
+    ANSIBLE_STRATEGY_PLUGINS: /tmp/mitogen-0.2.9/ansible_mitogen/plugins/strategy
+    ANSIBLE_STRATEGY: mitogen_linear
+    ANSIBLE_PIPELINING: true
   lint:
     name: ansible-lint
 verifier:
