@@ -8,24 +8,28 @@ lint:
 platforms:
   - name: centos-7
     image: jonsible/centos:7
-    privileged: true
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    command: "/sbin/init"
+    # privileged: true
+    # volumes:
+    #   - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    # command: "/sbin/init"
     tty: true
     env:
       container: docker
   - name: debian-stretch
-    image: jonsible/debian:stretch-systemd
-    privileged: true
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    command: "/lib/systemd/systemd"
+    image: jonsible/debian:stretch
+    # privileged: true
+    # volumes:
+    #   - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    # command: "/lib/systemd/systemd"
     tty: true
     env:
       container: docker
       LC_ALL: en_US.utf8
       DEBIAN_FRONTEND: noninteractive
+  - name: archlinux-latest
+    image: jonsible/archlinux:latest
+    env:
+      container: docker
 provisioner:
   name: ansible
   lint:
