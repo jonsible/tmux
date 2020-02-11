@@ -32,6 +32,8 @@ platforms:
       DEBIAN_FRONTEND: noninteractive
   - name: archlinux-latest
     image: jonsible/archlinux:latest-build
+    capabilities:
+      - LINUX_IMMUTABLE
     env:
       container: docker
 provisioner:
