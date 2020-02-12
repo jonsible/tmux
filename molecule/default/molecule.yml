@@ -26,7 +26,7 @@ provisioner:
   name: ansible
   env:
     # yamllint disable-line rule:line-length
-    ANSIBLE_STRATEGY_PLUGINS: /tmp/mitogen-0.2.9/ansible_mitogen/plugins/strategy
+    ANSIBLE_STRATEGY_PLUGINS: /opt/mitogen-0.2.9/ansible_mitogen/plugins/strategy
     ANSIBLE_STRATEGY: mitogen_linear
     ANSIBLE_PIPELINING: true
   lint:
