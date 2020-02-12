@@ -1,7 +1,7 @@
-# joscherrer.tmux
+# jonsible.tmux
 
-[![Build Status](https://travis-ci.com/joscherrer/tmux.svg?branch=master)](https://travis-ci.com/joscherrer/tmux)
-[![Galaxy](https://img.shields.io/badge/galaxy-joscherrer.tmux-blue.svg)](https://galaxy.ansible.com/joscherrer/tmux/)
+[![Build Status](https://travis-ci.com/jonsible/tmux.svg?branch=master)](https://travis-ci.com/jonsible/tmux)
+[![Galaxy](https://img.shields.io/badge/galaxy-jonsible.tmux-blue.svg)](https://galaxy.ansible.com/jonsible/tmux/)
 
 Role to install tmux
 
@@ -43,12 +43,12 @@ Install tmux with the default settings
 ```yaml
 - hosts: all
   roles:
-     - role: joscherrer.tmux
+     - role: jonsible.tmux
 ```
 
 ## License
 
-BSD-3-Clause-Clear
+MIT
 
 ## Author Information
 
