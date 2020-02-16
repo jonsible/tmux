@@ -26,11 +26,10 @@ tmux_user_install: "{{ global_user_install | default(false) }}"
 tmux_user_config: "{{_global_user_config | default(false) }}"
 tmux_skel_config: "{{ global_skel_config | default(false) }}"
 tmux_install_from_source: "{{ global_install_from_source | default(false) }}"
-tmux_source_url: "https://github.com/user/tmux/archive/tmux-{{ tmux_git_version }}.tar.gz"
 tmux_force_install: "{{ global_force_install | default(false) }}"
 tmux_user_strip: "{{ global_user_strip | default([]) }}"
 tmux_user_filter: "{{ global_user_filter | default([])}}"
-tmux_version: ""
+tmux_version: "2.9"
 ```
 
 ## Dependencies
