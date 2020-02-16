@@ -1,0 +1,38 @@
+---
+- name: Creating tmux versioned directory
+  become: true
+  file:
+    path: "{{ source_path }}/tmux-{{ tmux_git_version }}/"
+    state: directory
+    mode: 0755
+
+- name: Downloading the latest version of tmux
+  become: true
+  unarchive:
+    src: "{{ tmux_source_url }}"
+    dest: "{{ source_path }}/tmux-{{ tmux_git_version }}/"
+    extra_opts:
+      - --strip-components=1
+    remote_src: true
+
+- name: Configuring tmux
+  become: true
+  shell: |
+    ./configure --prefix="{{ prefix }}"
+  changed_when: false
+  args:
+    chdir: "{{ source_path }}/tmux-{{ tmux_git_version }}/"
+
+- name: Making tmux
+  become: true
+  make:
+    chdir: "{{ source_path }}/tmux-{{ tmux_git_version }}"
+
+- name: Installing tmux
+  become: true
+  changed_when: false
+  make:
+    chdir: "{{ source_path }}/tmux-{{ tmux_git_version }}"
+    target: install
+    params:
+      PREFIX: "{{ prefix }}"

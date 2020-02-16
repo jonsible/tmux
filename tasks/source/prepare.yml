@@ -1,0 +1,58 @@
+---
+- name: Getting latest tmux version
+  shell: | # noqa 303
+    set -o pipefail
+    {{ tmux_git_version_cmd }}
+  args:
+    executable: /bin/bash
+  register: tmux_git
+  changed_when: false
+
+- name: Setting prefix (user)
+  set_fact:
+    prefix: "{{ item.value['home'] }}/.local"
+  when: tmux_user_install|bool
+
+- name: Setting source_path (user)
+  set_fact:
+    source_path: "{{ item.value['home'] }}/.local/src"
+  when: tmux_user_install|bool
+
+- name: Setting prefix (global)
+  set_fact:
+    prefix: "{{ item.value['home'] }}"
+  when: not tmux_user_install|bool
+
+- name: Setting source_path (global)
+  set_fact:
+    source_path: "{{ tmux_source_path }}"
+  when: not tmux_user_install|bool
+
+- name: Checking if tmux is installed
+  stat:
+    path: "{{ prefix }}/bin/{{ tmux_bin_name }}"
+  register: tmux_installed
+
+- name: Getting current tmux version
+  shell: |
+    set -o pipefail
+    {{ tmux_local_version_cmd }}
+  args:
+    executable: /bin/bash
+  when: tmux_installed.stat.exists
+  register: tmux_local
+  changed_when: false
+
+- name: Set forced version
+  set_fact:
+    tmux_git_version: "{{ tmux_version }}"
+
+- name: Set latest tmux version
+  set_fact:
+    tmux_git_version: "{{ tmux_git.stdout }}"
+  when: not tmux_git_version
+
+- name: Set local tmux version
+  set_fact:
+    tmux_local_version: "{{ tmux_local.stdout }}"
+  when: tmux_installed.stat.exists

@@ -1,0 +1,15 @@
+---
+- include_tasks: source/prepare.yml
+
+- include_tasks: source/uninstall.yml
+  when:
+    - tmux_installed.stat.exists
+    - >
+      (tmux_git_version != tmux_local_version) or
+      tmux_force_install|bool
+
+- include_tasks: source/install.yml
+  when: >
+    not tmux_installed.stat.exists or
+    tmux_force_install|bool or
+    (tmux_git_version != tmux_local_version)
