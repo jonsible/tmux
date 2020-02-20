@@ -7,6 +7,11 @@
     state: present
   when: tmux_install_from_source|bool
 
+- name: Update and upgrade
+  pacman:
+    update_cache: true
+    upgrade: true
+
 - name: Installing git
   become: true
   pacman:

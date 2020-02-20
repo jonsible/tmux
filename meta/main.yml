@@ -10,15 +10,16 @@ galaxy_info:
   min_ansible_version: 2.3
 
   platforms:
-    - name: EL
+    - name: Archlinux
       versions:
-        - 7
+        - any
     - name: Debian
       versions:
         - stretch
-    - name: Fedora
+        - buster
+    - name: EL
       versions:
-        - 29
+        - 7
     - name: Ubuntu
       versions:
         - bionic
