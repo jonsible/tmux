@@ -1,13 +1,18 @@
 ---
+- name: Update cache (Debian)
+  become: true
+  apt:
+    update_cache: true
+  tags: molecule-idempotence-notest
+
 - name: Installing build tools
   become: true
   apt:
     name: "{{ build_tools }}"
-    update_cache: true
     state: present
   when: tmux_install_from_source|bool
 
-- name: Installing additionnal build tools
+- name: Installing additionnal dependencies
   become: true
   apt:
     name: "{{ item }}"

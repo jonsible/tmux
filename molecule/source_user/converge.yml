@@ -9,11 +9,6 @@
     tmux_skel_config: true
     tmux_user_install: true
     tmux_user_config: true
-  pre_tasks:
-    - name: Update cache
-      apt:
-        update_cache: true
-      when: ansible_os_family == "Debian"
   tasks:
     - name: Creating users
       become: true
